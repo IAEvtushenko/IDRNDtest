@@ -19,6 +19,7 @@ bot = telebot.TeleBot(TOKEN)
 
 server = flask.Flask(__name__)
 
+
 @server.route('/', methods=["GET"])
 def index():
     bot.remove_webhook()
@@ -47,9 +48,11 @@ def voice_handle(message):
     bot.reply_to(message, file)
 
 
-@server.route('/', methods=["POST"])
+
+@server.route('/', methods=['POST'])
 @bot.message_handler(content_types=['photo'])
 def photo_handle(message):
+    logging.Logger.log(f'{message}')
     file_info = bot.get_file(message.voice.file_id)
     img = cv2.imread(file_info.file_path)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
