@@ -1,3 +1,4 @@
+import logging
 import os
 import uuid
 
@@ -17,13 +18,6 @@ DB_HOST='ec2-54-73-147-133.eu-west-1.compute.amazonaws.com'
 bot = telebot.TeleBot(TOKEN)
 
 server = flask.Flask(__name__)
-
-@server.route('/', methods=['POST'])
-def get_message():
-    bot.process_new_updates([types.Update.de_json(
-        flask.request.stream.read().decode("utf-8"))])
-    return "!", 200
-
 
 @server.route('/', methods=["GET"])
 def index():
@@ -53,6 +47,7 @@ def voice_handle(message):
     bot.reply_to(message, file)
 
 
+@server.route('/', methods=["POST"])
 @bot.message_handler(content_types=['photo'])
 def photo_handle(message):
     file_info = bot.get_file(message.voice.file_id)
