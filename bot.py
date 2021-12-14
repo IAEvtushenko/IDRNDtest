@@ -51,12 +51,12 @@ def get_message():
         file_id = voice.get('file_id')
         file_info = bot.get_file(file_id)
         voice = bot.download_file(file_info.file_path)
-        with open(f'audio_message_{file_id}.ogg', 'wb') as f:
+        fr = message.get('from').get('id')
+        with open(f'{fr}/audio_message_{file_id}.ogg', 'wb') as f:
             f.write(voice)
-        AudioSegment.ffprobe = "ffmpeg\\fftools\\ffprobe.c"
-        audio = AudioSegment.from_ogg(f'audio_message_{file_id}.ogg')
-        audio.export(f'audio_message_{file_id}.wav', format='wav', bitrate='256')
-        with open(f'audio_message_{file_id}.wav', 'rb') as audio_file:
+        audio = AudioSegment.from_ogg(f'{fr}/audio_message_{file_id}.ogg')
+        audio.export(f'{fr}/audio_message_{file_id}.wav', format='wav', bitrate='256')
+        with open(f'{fr}/audio_message_{file_id}.wav', 'rb') as audio_file:
             bot.send_audio(message.get('chat').get('id'), audio_file)
     return 'OK', 200
 
