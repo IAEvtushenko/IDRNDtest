@@ -18,7 +18,7 @@ bot = telebot.TeleBot(TOKEN)
 
 server = flask.Flask(__name__)
 
-@server.route('/' + TOKEN, methods=['POST'])
+@server.route('/', methods=['POST'])
 def get_message():
     bot.process_new_updates([types.Update.de_json(
         flask.request.stream.read().decode("utf-8"))])
