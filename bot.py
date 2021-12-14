@@ -1,10 +1,12 @@
 import os
 import uuid
 
+import flask
 import psycopg2
 import cv2
 import telebot
 from pydub import AudioSegment
+from telebot import types
 
 TOKEN='5096179678:AAGu0J3Zejp1wk7MKwA6zJrGvemEXylnvDY'
 DB_NAME='db7p2s49rgpa7v'
@@ -13,7 +15,25 @@ DB_PASSWORD='e7d0b9f747f46a8da294a0a7cca1202ee46ff1db2e3aa41bfc4b67709551bcba'
 DB_HOST='ec2-54-73-147-133.eu-west-1.compute.amazonaws.com'
 
 bot = telebot.TeleBot(TOKEN)
-bot.set_webhook('https://idrnd-test.herokuapp.com/')
+
+server = flask.Flask(__name__)
+
+@server.route('/' + TOKEN, methods=['POST'])
+def get_message():
+    bot.process_new_updates([types.Update.de_json(
+        flask.request.stream.read().decode("utf-8"))])
+    return "!", 200
+
+
+@server.route('/', methods=["GET"])
+def index():
+    bot.remove_webhook()
+    bot.set_webhook('https://idrnd-test.herokuapp.com/')
+    return "Hello from Heroku!", 200
+
+
+if __name__ == "__main__":
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
 
 @bot.message_handler(content_types=['voice'])
 def voice_handle(message):
