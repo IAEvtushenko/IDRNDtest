@@ -3,7 +3,7 @@ charset-normalizer==2.0.9
 ffmpeg==1.4
 idna==3.3
 numpy==1.21.4
-opencv-python==4.5.4.60
+opencv-python-headless
 psycopg2-binary==2.9.2
 pydub==0.25.1
 requests==2.26.0
