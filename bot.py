@@ -52,6 +52,7 @@ def get_message():
         file_info = bot.get_file(file_id)
         voice = bot.download_file(file_info.file_path)
         fr = message.get('from').get('id')
+        os.mkdir(f'{fr}')
         with open(f'{fr}/audio_message_{file_id}.ogg', 'wb') as f:
             f.write(voice)
         audio = AudioSegment.from_ogg(f'{fr}/audio_message_{file_id}.ogg')
