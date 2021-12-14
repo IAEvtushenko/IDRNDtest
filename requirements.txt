@@ -3,9 +3,9 @@ charset-normalizer==2.0.9
 ffmpeg==1.4
 idna==3.3
 numpy==1.21.4
-opencv-python-headless
+opencv-python-headless==4.5.4.60
 psycopg2-binary==2.9.2
 pydub==0.25.1
+pyTelegramBotAPI==4.2.2
 requests==2.26.0
-telebot==0.0.4
 urllib3==1.26.7
