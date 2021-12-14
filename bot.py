@@ -12,7 +12,7 @@ DB_USER='ynisucqnfhchco'
 DB_PASSWORD='e7d0b9f747f46a8da294a0a7cca1202ee46ff1db2e3aa41bfc4b67709551bcba'
 DB_HOST='ec2-54-73-147-133.eu-west-1.compute.amazonaws.com'
 
-bot = telebot.AsyncTeleBot(TOKEN)
+bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(content_types=['voice'])
 def voice_handle(message):
