@@ -49,7 +49,7 @@ def voice_handle(message):
 
 
 
-@server.route('/', methods=['POST'])
+#@server.route('/', methods=['POST'])
 @bot.message_handler(content_types=['photo'])
 def photo_handle(message):
     logging.Logger.log(f'{message}')
