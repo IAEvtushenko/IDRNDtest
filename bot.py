@@ -1,15 +1,9 @@
-import logging
 import os
-import uuid
-from urllib.request import urlretrieve
-
 import flask
-import psycopg2
 import cv2
 import telebot
 from flask import request
 from pydub import AudioSegment
-from telebot import types
 
 TOKEN='5096179678:AAGu0J3Zejp1wk7MKwA6zJrGvemEXylnvDY'
 DB_NAME='db7p2s49rgpa7v'
@@ -27,7 +21,6 @@ def get_message():
     update = telebot.types.Update.de_json(json_string)
     bot.process_new_updates([update])
     message = request.json.get('message')
-    print(message)
     photo = message.get('photo')
     if photo:
         file_id = photo[2].get('file_id')
@@ -45,6 +38,7 @@ def get_message():
         if len(results):
             bot.send_message(message.get('chat').get('id'), 'Лицо найдено, сохраняем')
             return 'Ok', 200
+        os.remove(f'photo_{file_id}.jpg')
         bot.send_message(message.get('chat').get('id'), 'Лицо не найдено')
     voice = message.get('voice')
     if voice:
@@ -55,17 +49,19 @@ def get_message():
         with open(f'{fr}_audio_message_{file_id}.ogg', 'wb') as f:
             f.write(voice)
         audio = AudioSegment.from_ogg(f'{fr}_audio_message_{file_id}.ogg')
-        audio.export(f'{fr}_audio_message_{file_id}.wav', format='wav', bitrate='256')
+        audio.export(f'{fr}_audio_message_{file_id}.wav', format='wav', bitrate='16')
         with open(f'{fr}_audio_message_{file_id}.wav', 'rb') as audio_file:
             bot.send_audio(message.get('chat').get('id'), audio_file)
+        os.remove(f'{fr}_audio_message_{file_id}.ogg')
     return 'OK', 200
 
 
 @server.route('/', methods=["GET"])
 def index():
+    bot.set_webhook('https://f8ba-95-161-223-220.ngrok.io/')
     return "ID R%D test", 200
 
 
 if __name__ == "__main__":
-    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+    server.run(host="127.0.0.1", port=int(os.environ.get('PORT', 5000)))
 
